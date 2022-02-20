@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:revolt/src/models/builders.dart';
 import 'package:revolt/src/models/node_info.dart';
+import 'package:revolt/src/models/onboarding.dart';
 import 'package:revolt/src/models/user.dart';
 
 class Revolt {
@@ -66,11 +68,31 @@ class Revolt {
 
   // --- Core ---
 
+  /// Fetch information about which features are enabled on the remote node.
   Future<NodeInfo> queryNode() async {
     return NodeInfo.fromJson(await fetchRaw('GET', '/'));
   }
 
   // --- Onboarding ---
+
+  /// This will tell you whether the current account requires onboarding or whether you can continue to send requests as usual.
+  /// You may skip calling this if you're restoring an existing session.
+  Future<OnboardingInformation> checkOnboardingStatus() async {
+    return OnboardingInformation.fromJson(
+      await fetchRaw('GET', '/onboard/hello'),
+    );
+  }
+
+  /// Set a new username, complete onboarding and allow a user to start using Revolt.
+  Future<void> completeOnboarding(
+    CompleteOnboardingBuilder completeOnboardingBuilder,
+  ) async {
+    await fetchRaw(
+      'POST',
+      '/onboard/complete',
+      body: completeOnboardingBuilder.build(),
+    );
+  }
 
   // --- Auth ---
 
@@ -80,7 +102,7 @@ class Revolt {
 
   // --- User Information ---
 
-  /// Retrieve your user information
+  /// Retrieve your user information.
   Future<User> fetchSelf() async {
     return User.fromJson(await fetchRaw('GET', '/users/@me'));
   }
