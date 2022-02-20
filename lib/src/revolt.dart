@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:revolt/src/models/node_info.dart';
 import 'package:revolt/src/models/user.dart';
 
 class Revolt {
@@ -64,6 +65,10 @@ class Revolt {
   }
 
   // --- Core ---
+
+  Future<NodeInfo> queryNode() async {
+    return NodeInfo.fromJson(await fetchRaw('GET', '/'));
+  }
 
   // --- Onboarding ---
 
