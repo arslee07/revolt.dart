@@ -1,2 +1,2 @@
 # revolt.dart
-revolt api wrapper for dart
+an idiomatic revolt api wrapper for dart
