@@ -34,6 +34,7 @@ class Ulid implements Comparable<Ulid> {
     return Ulid._(data);
   }
 
+  /// Generate a new [Ulid] with current time
   factory Ulid.fromNow() => Ulid.fromTimestamp(DateTime.now());
 
   /// Parse [Ulid] from string.
@@ -77,7 +78,7 @@ class Ulid implements Comparable<Ulid> {
     return sb.toString().toUpperCase();
   }
 
-  /// Get the millisecond component.
+  /// Convert to [DateTime]
   DateTime toTimestamp() {
     var millis = 0;
     for (var i = 0; i < 6; i++) {

@@ -1,12 +1,24 @@
 import 'package:revolt/src/utils/enum.dart';
 import 'package:revolt/src/utils/flags_utils.dart';
 
+/// Attachment information
 class Attachment {
+  /// Attachment ID
   final String id;
-  final FileTag tag;
+
+  /// Attachment tag
+  final AttachmentTag tag;
+
+  /// File size (in bytes)
   final int size;
+
+  /// File name
   final String fileName;
-  final String contentsType;
+
+  /// Content type
+  final String contentType;
+
+  /// Metadata
   final Metadata metadata;
 
   Attachment({
@@ -14,37 +26,40 @@ class Attachment {
     required this.tag,
     required this.size,
     required this.fileName,
-    required this.contentsType,
+    required this.contentType,
     required this.metadata,
   });
 
   Attachment.fromJson(Map<String, dynamic> json)
       : id = json['_id'],
-        tag = FileTag.from('tag'),
+        tag = AttachmentTag.from('tag'),
         size = json['size'],
         fileName = json['filename'],
-        contentsType = json['content_type'],
+        contentType = json['content_type'],
         metadata = Metadata.define(json['metadata']);
 }
 
-class FileTag extends Enum<String> {
-  static const attachments = FileTag._create('atttachments');
-  static const avatars = FileTag._create('avatars');
-  static const backgrounds = FileTag._create('backgrounds');
-  static const banners = FileTag._create('banners');
-  static const icons = FileTag._create('icons');
+/// Attachment tag
+class AttachmentTag extends Enum<String> {
+  static const attachments = AttachmentTag._create('atttachments');
+  static const avatars = AttachmentTag._create('avatars');
+  static const backgrounds = AttachmentTag._create('backgrounds');
+  static const banners = AttachmentTag._create('banners');
+  static const icons = AttachmentTag._create('icons');
 
-  FileTag.from(String value) : super(value);
-  const FileTag._create(String value) : super(value);
+  AttachmentTag.from(String value) : super(value);
+  const AttachmentTag._create(String value) : super(value);
 }
 
+/// Attachment metadata
 class Metadata {
-  FileMetadataType type;
+  /// Attachment metadata type
+  AttachmentMetadataType type;
 
   Metadata({required this.type});
 
   Metadata.fromJson(Map<String, dynamic> raw)
-      : type = FileMetadataType.from(raw['type']);
+      : type = AttachmentMetadataType.from(raw['type']);
 
   factory Metadata.define(Map<String, dynamic> json) {
     switch (json['type']) {
@@ -64,27 +79,34 @@ class Metadata {
   }
 }
 
+/// File metadata
 class FileMetadata extends Metadata {
-  FileMetadata({required FileMetadataType type}) : super(type: type);
+  FileMetadata({required AttachmentMetadataType type}) : super(type: type);
   FileMetadata.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 }
 
+/// Text metadata
 class TextMetadata extends Metadata {
-  TextMetadata({required FileMetadataType type}) : super(type: type);
+  TextMetadata({required AttachmentMetadataType type}) : super(type: type);
   TextMetadata.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 }
 
+/// Audio metadata
 class AudioMetadata extends Metadata {
-  AudioMetadata({required FileMetadataType type}) : super(type: type);
+  AudioMetadata({required AttachmentMetadataType type}) : super(type: type);
   AudioMetadata.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 }
 
+/// Image metadata
 class ImageMetadata extends Metadata {
+  /// Image width
   final int width;
+
+  /// Image height
   final int height;
 
   ImageMetadata({
-    required FileMetadataType type,
+    required AttachmentMetadataType type,
     required this.width,
     required this.height,
   }) : super(type: type);
@@ -95,12 +117,16 @@ class ImageMetadata extends Metadata {
         super.fromJson(json);
 }
 
+/// Video metadata
 class VideoMetadata extends Metadata {
+  /// Video width
   final int width;
+
+  /// Video height
   final int height;
 
   VideoMetadata({
-    required FileMetadataType type,
+    required AttachmentMetadataType type,
     required this.width,
     required this.height,
   }) : super(type: type);
@@ -111,19 +137,21 @@ class VideoMetadata extends Metadata {
         super.fromJson(json);
 }
 
+/// Undefined metadata
 class UndefinedMetadata extends Metadata {
-  UndefinedMetadata({required FileMetadataType type}) : super(type: type);
+  UndefinedMetadata({required AttachmentMetadataType type}) : super(type: type);
   UndefinedMetadata.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 }
 
-class FileMetadataType extends Enum<String> {
-  static const file = FileMetadataType._create('File');
-  static const text = FileMetadataType._create('Text');
-  static const audio = FileMetadataType._create('Audio');
-  static const image = FileMetadataType._create('Image');
-  static const video = FileMetadataType._create('Video');
-  static const undefined = FileMetadataType._create('Undefined');
+/// Attachment metadata type
+class AttachmentMetadataType extends Enum<String> {
+  static const file = AttachmentMetadataType._create('File');
+  static const text = AttachmentMetadataType._create('Text');
+  static const audio = AttachmentMetadataType._create('Audio');
+  static const image = AttachmentMetadataType._create('Image');
+  static const video = AttachmentMetadataType._create('Video');
+  static const undefined = AttachmentMetadataType._create('Undefined');
 
-  const FileMetadataType._create(String value) : super(value);
-  FileMetadataType.from(String value) : super(value);
+  const AttachmentMetadataType._create(String value) : super(value);
+  AttachmentMetadataType.from(String value) : super(value);
 }

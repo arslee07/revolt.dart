@@ -120,9 +120,15 @@ class Presence extends Enum<String> {
   const Presence._create(String value) : super(value);
 }
 
+/// User flags
 class UserFlags {
+  /// Whether the account is suspended
   final bool suspended;
+
+  /// Whether the account is deleted
   final bool deleted;
+
+  /// Whether the account is banned
   final bool banned;
 
   UserFlags({
@@ -166,16 +172,36 @@ class RelationshipStatus extends Enum<String> {
   const RelationshipStatus._create(String value) : super(value);
 }
 
+/// User's badges
 class UserBadges {
+  /// Developer
   final bool developer;
+
+  /// Translator
   final bool translator;
+
+  /// Supporter
   final bool supporter;
+
+  /// Responsible Disclosure
   final bool responsibleDisclosure;
+
+  /// Founder
   final bool founder;
+
+  /// Platform Moderation
   final bool platformModeration;
+
+  /// Active Supporter
   final bool activeSupporter;
+
+  /// Paw
   final bool paw;
+
+  /// Early Adopter
   final bool earlyAdopter;
+
+  /// Reserver Relevant Joke Badge 1 :amogus:
   final bool reservedRelevantJokeBadge1;
 
   UserBadges({
@@ -204,7 +230,9 @@ class UserBadges {
         reservedRelevantJokeBadge1 = FlagsUtils.isApplied(raw, 1 << 9);
 }
 
+/// Bot information
 class BotInformation {
+  /// The user ID of the owner of this bot
   final Ulid owner;
 
   BotInformation({required this.owner});
