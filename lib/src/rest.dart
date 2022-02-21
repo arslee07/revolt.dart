@@ -40,7 +40,7 @@ class RevoltRest {
 
     if (method != 'GET') {
       req.headers.add('content-length', utf8.encode(jsonEncode(body)).length);
-      req.write(utf8.encode(jsonEncode(body)));
+      req.add(utf8.encode(jsonEncode(body)));
     }
 
     final res = await req.close();
