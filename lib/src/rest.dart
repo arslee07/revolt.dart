@@ -107,6 +107,19 @@ class RevoltRest {
 
   // --- Messaging ---
 
+  // TODO: return message object
+  /// Send message to specified channel.
+  Future<void> sendMessage({
+    required Ulid channelId,
+    required MessageBuilder message,
+  }) async {
+    await fetchRaw(
+      'POST',
+      '/channels/$channelId/messages',
+      body: message.build(),
+    );
+  }
+
   // --- Groups ---
 
   // --- Voice ---
