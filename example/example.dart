@@ -1,5 +1,4 @@
 import 'package:revolt/revolt.dart';
-import 'package:revolt/src/ws.dart';
 
 void main() async {
   final client = Revolt(
@@ -12,6 +11,6 @@ void main() async {
 
   await client.connect();
 
-  final user = await client.fetchSelf();
+  final user = await client.rest.fetchSelf();
   print(user.username);
 }
