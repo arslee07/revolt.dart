@@ -5,10 +5,15 @@ import 'package:revolt/src/models/builders.dart';
 import 'package:revolt/src/models/node_info.dart';
 import 'package:revolt/src/models/onboarding.dart';
 import 'package:revolt/src/models/user.dart';
+import 'package:revolt/src/ws.dart';
 
 class Revolt {
   /// Base REST API URL
   final Uri baseRestUrl;
+
+  // TODO: fetch ws url automatically
+  /// Base WebSocket URL
+  final Uri baseWsUrl;
 
   /// Token of the bot
   final String? botToken;
@@ -16,11 +21,14 @@ class Revolt {
   /// Session token of the user
   final String? sessionToken;
 
+  final RevoltWebsocket ws;
+
   Revolt({
     required this.baseRestUrl,
+    required this.baseWsUrl,
     this.botToken,
     this.sessionToken,
-  });
+  }) : ws = RevoltWebsocket();
 
   /// Fetch raw JSON content.
   /// Can return [null], [List<dynamic>] or [Map<String, dynamic>]
@@ -64,6 +72,24 @@ class Revolt {
     }
 
     if (data.isNotEmpty) return json.decode(data);
+  }
+
+  Future<void> connect() async {
+    if (!ws.isOpen) {
+      await ws.connect(
+        token: botToken ?? sessionToken ?? '',
+        baseUrl: baseWsUrl,
+      );
+    }
+  }
+
+  Future<void> disconnect() async {
+    await ws.disconnect();
+  }
+
+  Future<void> reconnect() async {
+    await ws.disconnect();
+    await ws.connect(token: botToken ?? sessionToken ?? '', baseUrl: baseWsUrl);
   }
 
   // --- Core ---
