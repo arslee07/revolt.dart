@@ -2,8 +2,7 @@ import 'package:revolt/revolt.dart';
 
 void main() async {
   final client = Revolt(
-    baseRestUrl: Uri.parse('https://api.revolt.chat'),
-    baseWsUrl: Uri.parse('wss://ws.revolt.chat'),
+    baseUrl: Uri.parse('https://api.revolt.chat'),
     botToken: '',
   );
 
