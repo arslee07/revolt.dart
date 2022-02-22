@@ -18,7 +18,7 @@ class RevoltWebsocket {
 
   Future<void> sendPing() async {
     _ws!.add(jsonEncode(
-      {'type': 'Ping', 'data': DateTime.now().millisecondsSinceEpoch},
+      {'type': 'Ping', 'data': 0},
     ));
   }
 
@@ -33,6 +33,7 @@ class RevoltWebsocket {
     required Uri baseUrl,
     bool autoPing = true,
     bool autoAuth = true,
+    bool autoReconnect = true,
   }) async {
     await open(baseUrl);
     if (autoAuth) {
@@ -46,6 +47,22 @@ class RevoltWebsocket {
         },
       );
     }
+    _ws?.done.then((_) {
+      print('among us');
+    });
+    // if (autoReconnect) {
+    //   _ws?.done.then((_) async {
+    //     print('reconnecting...');
+    //     await disconnect();
+    //     await connect(
+    //       baseUrl: baseUrl,
+    //       token: token,
+    //       autoPing: autoPing,
+    //       autoAuth: autoAuth,
+    //       autoReconnect: autoReconnect,
+    //     );
+    //   });
+    // }
   }
 
   Future<void> disconnect() async {
@@ -54,7 +71,7 @@ class RevoltWebsocket {
 
   Future<void> open(Uri baseUrl) async {
     _ws = await WebSocket.connect(baseUrl.toString());
-    _ws!.listen(_handle);
+    _ws!.listen(_handle, cancelOnError: true);
   }
 
   Future<void> close() async {
