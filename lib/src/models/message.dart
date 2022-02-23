@@ -45,7 +45,9 @@ class Message {
         mentions = json['mentions'] == null
             ? null
             : [for (final e in json['mentions']) Ulid(e)],
-        replies = json['replies'],
+        replies = json['replies'] == null
+            ? null
+            : [for (final e in json['replies']) e],
         masquerade = json['masquerade'] == null
             ? null
             : Masquerade.fromJson(json['masquerade']);
