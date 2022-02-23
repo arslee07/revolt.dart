@@ -48,7 +48,7 @@ class RevoltRest {
     c.close();
 
     if (!(res.statusCode >= 200 && res.statusCode <= 299)) {
-      throw body;
+      throw res.statusCode;
     }
 
     if (data.isNotEmpty) return json.decode(data);
