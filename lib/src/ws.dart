@@ -2,23 +2,34 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:revolt/models.dart';
+
 class RevoltWebsocket {
   WebSocket? _ws;
   Timer? _heartbeat;
 
   bool get isOpen => _ws != null;
 
-  final StreamController<dynamic> onRawEvent = StreamController.broadcast();
+  final StreamController<dynamic> onRawData = StreamController.broadcast();
+
+  final StreamController<Message> onMessage = StreamController.broadcast();
 
   RevoltWebsocket();
 
   void _handle(dynamic data) {
-    onRawEvent.add(data);
+    onRawData.add(data);
+
+    final json = jsonDecode(data);
+
+    switch (json['type']) {
+      case 'Message':
+        onMessage.sink.add(Message.fromJson(json));
+    }
   }
 
   Future<void> sendPing() async {
     _ws!.add(jsonEncode(
-      {'type': 'Ping', 'data': 0},
+      {'type': 'Ping', 'data': DateTime.now().millisecondsSinceEpoch},
     ));
   }
 
