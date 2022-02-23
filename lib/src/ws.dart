@@ -47,22 +47,18 @@ class RevoltWebsocket {
         },
       );
     }
-    _ws?.done.then((_) {
-      print('among us');
-    });
-    // if (autoReconnect) {
-    //   _ws?.done.then((_) async {
-    //     print('reconnecting...');
-    //     await disconnect();
-    //     await connect(
-    //       baseUrl: baseUrl,
-    //       token: token,
-    //       autoPing: autoPing,
-    //       autoAuth: autoAuth,
-    //       autoReconnect: autoReconnect,
-    //     );
-    //   });
-    // }
+    if (autoReconnect) {
+      _ws?.done.then((_) async {
+        await disconnect();
+        await connect(
+          baseUrl: baseUrl,
+          token: token,
+          autoPing: autoPing,
+          autoAuth: autoAuth,
+          autoReconnect: autoReconnect,
+        );
+      });
+    }
   }
 
   Future<void> disconnect() async {
