@@ -25,7 +25,9 @@ class MessageBuilder extends Builder<Map<String, dynamic>> {
     String content, {
     required List<MessageReplyBuilder> replies,
   }) {
-    return MessageBuilder()..replies = replies;
+    return MessageBuilder()
+      ..content = content
+      ..replies = replies;
   }
 
   @override
@@ -41,15 +43,15 @@ class MessageBuilder extends Builder<Map<String, dynamic>> {
 
 class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
   Ulid messageId;
-  bool shouldMention;
+  bool mention;
 
-  MessageReplyBuilder(this.messageId, {this.shouldMention = false});
+  MessageReplyBuilder(this.messageId, {this.mention = false});
 
   @override
   Map<String, dynamic> build() {
     return {
       'id': messageId.toString(),
-      'mention': shouldMention,
+      'mention': mention,
     };
   }
 }
