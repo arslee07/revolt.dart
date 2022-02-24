@@ -135,6 +135,11 @@ class RevoltRest {
 
   // --- Server Information ---
 
+  /// Retrieve a server.
+  Future<Server> fetchServer({required Ulid serverId}) async {
+    return Server.fromJson(await fetchRaw('GET', '/servers/$serverId'));
+  }
+
   // --- Server Members ---
 
   // --- Server Permissions ---
