@@ -17,16 +17,16 @@ class Message {
 
   Message({
     required this.id,
-    required this.nonce,
+    this.nonce,
     required this.channel,
     required this.author,
     required this.content,
-    required this.attachments,
-    required this.edited,
-    required this.embeds,
-    required this.mentions,
-    required this.replies,
-    required this.masquerade,
+    this.attachments,
+    this.edited,
+    this.embeds,
+    this.mentions,
+    this.replies,
+    this.masquerade,
   });
 
   Message.fromJson(Map<String, dynamic> json)
