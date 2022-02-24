@@ -39,8 +39,8 @@ class RevoltRest {
       req.headers.set('x-bot-token', botToken!);
     }
 
-    req.headers.contentLength = jsonEncode(body).length;
-    req.write(jsonEncode(body));
+    req.headers.contentLength = utf8.encode(jsonEncode(body)).length;
+    req.add(utf8.encode(jsonEncode(body)));
 
     final res = await req.close();
     final data = await utf8.decodeStream(res);
