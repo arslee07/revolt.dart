@@ -32,7 +32,7 @@ class MessageBuilder extends Builder<Map<String, dynamic>> {
 }
 
 class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
-  Ulid messageId;
+  final Ulid messageId;
   bool mention;
 
   MessageReplyBuilder(this.messageId, {this.mention = false});
@@ -49,12 +49,12 @@ class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
 abstract class EmbedBuilder extends Builder<Map<String, dynamic>> {}
 
 class TextEmbedBuilder extends EmbedBuilder {
-  Uri? iconUrl;
-  Uri? url;
-  String? title;
-  String? description;
-  String? media;
-  String? colour;
+  final Uri? iconUrl;
+  final Uri? url;
+  final String? title;
+  final String? description;
+  final String? media;
+  final String? colour;
 
   TextEmbedBuilder({
     this.iconUrl,
