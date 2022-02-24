@@ -13,9 +13,9 @@ void main() async {
       (e) async {
         await client.rest.sendMessage(
           channelId: e.channel,
-          message: MessageBuilder.reply(
-            'Pong! :amogus:',
-            replies: [MessageReplyBuilder(e.id, mention: true)],
+          message: MessageBuilder(
+            content: 'Pong! :amogus:',
+            replies: [MessageReplyBuilder(e.id)],
           ),
         );
       },
@@ -24,9 +24,29 @@ void main() async {
       (e) async {
         await client.rest.sendMessage(
           channelId: e.channel,
-          message: MessageBuilder.reply(
-            Random().nextInt(1000).toString(),
-            replies: [MessageReplyBuilder(e.id, mention: true)],
+          message: MessageBuilder(
+            content: Random().nextInt(1000).toString(),
+            replies: [MessageReplyBuilder(e.id)],
+          ),
+        );
+      },
+    )
+    ..where((m) => m.content.startsWith('a.fullmessage')).listen(
+      (e) async {
+        await client.rest.sendMessage(
+          channelId: e.channel,
+          message: MessageBuilder(
+            content: 'Full message test :amogus:',
+            replies: [MessageReplyBuilder(e.id)],
+            embeds: [
+              TextEmbedBuilder(title: 'among us', description: ':amogus:'),
+            ],
+            masquerade: MasqueradeBuilder(
+              name: 'among_us_gamer_6969',
+              avatar: Uri.parse(
+                'http://www.rw-designer.com/icon-image/21508-256x256x32.png',
+              ),
+            ),
           ),
         );
       },
