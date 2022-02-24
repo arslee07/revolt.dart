@@ -14,21 +14,7 @@ class CompleteOnboardingBuilder extends Builder<Map<String, dynamic>> {
 class MessageBuilder extends Builder<Map<String, dynamic>> {
   String? content;
   List<MessageReplyBuilder>? replies;
-
-  MessageBuilder();
-
-  factory MessageBuilder.content(String content) {
-    return MessageBuilder()..content = content;
-  }
-
-  factory MessageBuilder.reply(
-    String content, {
-    required List<MessageReplyBuilder> replies,
-  }) {
-    return MessageBuilder()
-      ..content = content
-      ..replies = replies;
-  }
+  List<EmbedBuilder>? embeds;
 
   @override
   Map<String, dynamic> build() {
@@ -36,7 +22,9 @@ class MessageBuilder extends Builder<Map<String, dynamic>> {
       if (content != null && content!.isNotEmpty) 'content': content.toString(),
       'nonce': Ulid.fromNow().toString(),
       if (replies != null && replies!.isNotEmpty)
-        'replies': replies!.map((r) => r.build()).toList()
+        'replies': replies!.map((r) => r.build()).toList(),
+      if (embeds != null && embeds!.isNotEmpty)
+        'embeds': embeds!.map((e) => e.build()).toList(),
     };
   }
 }
@@ -52,6 +40,39 @@ class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
     return {
       'id': messageId.toString(),
       'mention': mention,
+    };
+  }
+}
+
+abstract class EmbedBuilder extends Builder<Map<String, dynamic>> {}
+
+class TextEmbedBuilder extends EmbedBuilder {
+  Uri? iconUrl;
+  Uri? url;
+  String? title;
+  String? description;
+  String? media;
+  String? colour;
+
+  TextEmbedBuilder({
+    this.iconUrl,
+    this.url,
+    this.title,
+    this.description,
+    this.media,
+    this.colour,
+  });
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'type': 'Text',
+      if (iconUrl != null) 'icon_url': iconUrl.toString(),
+      if (url != null) 'url': url.toString(),
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (media != null) 'media': media,
+      if (colour != null) 'colour': colour,
     };
   }
 }
