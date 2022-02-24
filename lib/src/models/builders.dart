@@ -10,13 +10,20 @@ class CompleteOnboardingBuilder extends Builder<Map<String, dynamic>> {
   Map<String, dynamic> build() => {'username': username};
 }
 
-// TODO: implement attachments
 class MessageBuilder extends Builder<Map<String, dynamic>> {
   final String? content;
+  final List<String>? attachments;
   final List<MessageReplyBuilder>? replies;
   final List<EmbedBuilder>? embeds;
+  final MasqueradeBuilder? masquerade;
 
-  MessageBuilder({this.content, this.replies, this.embeds});
+  MessageBuilder({
+    this.content,
+    this.replies,
+    this.embeds,
+    this.attachments,
+    this.masquerade,
+  });
 
   @override
   Map<String, dynamic> build() {
@@ -27,13 +34,16 @@ class MessageBuilder extends Builder<Map<String, dynamic>> {
         'replies': replies!.map((r) => r.build()).toList(),
       if (embeds != null && embeds!.isNotEmpty)
         'embeds': embeds!.map((e) => e.build()).toList(),
+      if (attachments != null && attachments!.isNotEmpty)
+        'attachments': attachments!,
+      if (masquerade != null) 'masquerade': masquerade!.build(),
     };
   }
 }
 
 class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
   final Ulid messageId;
-  bool mention;
+  final bool mention;
 
   MessageReplyBuilder(this.messageId, {this.mention = false});
 
@@ -42,6 +52,21 @@ class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
     return {
       'id': messageId.toString(),
       'mention': mention,
+    };
+  }
+}
+
+class MasqueradeBuilder extends Builder<Map<String, dynamic>> {
+  final String? name;
+  final Uri? avatar;
+
+  MasqueradeBuilder({this.name, this.avatar});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      if (name != null) 'name': name,
+      if (avatar != null) 'avatar': avatar.toString(),
     };
   }
 }
