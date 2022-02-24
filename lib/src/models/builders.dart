@@ -12,9 +12,11 @@ class CompleteOnboardingBuilder extends Builder<Map<String, dynamic>> {
 
 // TODO: implement attachments
 class MessageBuilder extends Builder<Map<String, dynamic>> {
-  String? content;
-  List<MessageReplyBuilder>? replies;
-  List<EmbedBuilder>? embeds;
+  final String? content;
+  final List<MessageReplyBuilder>? replies;
+  final List<EmbedBuilder>? embeds;
+
+  MessageBuilder({this.content, this.replies, this.embeds});
 
   @override
   Map<String, dynamic> build() {
