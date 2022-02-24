@@ -5,3 +5,6 @@ export 'src/models/attachment.dart';
 export 'src/models/ulid.dart';
 export 'src/models/user.dart';
 export 'src/models/message.dart';
+export 'src/models/permissions.dart';
+export 'src/models/role.dart';
+export 'src/models/server.dart';
