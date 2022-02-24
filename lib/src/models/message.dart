@@ -35,7 +35,7 @@ class Message {
         author = Ulid(json['author']),
         content = json['content'] is String
             ? json['content']
-            : SystemUserContent.define(json['content']),
+            : SystemContent.define(json['content']),
         attachments = json['attachments'] == null
             ? null
             : [for (final e in json['attachments']) Attachment.fromJson(e)],
@@ -53,34 +53,33 @@ class Message {
             : Masquerade.fromJson(json['masquerade']);
 }
 
-class SystemUserContentType extends Enum<String> {
-  static const text = SystemUserContentType._create('text');
-  static const userAdded = SystemUserContentType._create('user_added');
-  static const userRemove = SystemUserContentType._create('user_remove');
-  static const userJoined = SystemUserContentType._create('user_joined');
-  static const userLeft = SystemUserContentType._create('user_left');
-  static const userKicked = SystemUserContentType._create('user_kicked');
-  static const userBanned = SystemUserContentType._create('user_banned');
-  static const channedRenamed =
-      SystemUserContentType._create('channel_renamed');
+class SystemContentType extends Enum<String> {
+  static const text = SystemContentType._create('text');
+  static const userAdded = SystemContentType._create('user_added');
+  static const userRemove = SystemContentType._create('user_remove');
+  static const userJoined = SystemContentType._create('user_joined');
+  static const userLeft = SystemContentType._create('user_left');
+  static const userKicked = SystemContentType._create('user_kicked');
+  static const userBanned = SystemContentType._create('user_banned');
+  static const channedRenamed = SystemContentType._create('channel_renamed');
   static const channelDescriptionChanged =
-      SystemUserContentType._create('channel_description_changed');
+      SystemContentType._create('channel_description_changed');
   static const channelIconChanged =
-      SystemUserContentType._create('channel_icon_changed');
+      SystemContentType._create('channel_icon_changed');
 
-  const SystemUserContentType._create(String value) : super(value);
-  SystemUserContentType.from(String value) : super(value);
+  const SystemContentType._create(String value) : super(value);
+  SystemContentType.from(String value) : super(value);
 }
 
-class SystemUserContent {
-  final SystemUserContentType type;
+abstract class SystemContent {
+  final SystemContentType type;
 
-  SystemUserContent({required this.type});
+  SystemContent({required this.type});
 
-  SystemUserContent.fromJson(Map<String, dynamic> json)
-      : type = SystemUserContentType.from(json['type']);
+  SystemContent.fromJson(Map<String, dynamic> json)
+      : type = SystemContentType.from(json['type']);
 
-  factory SystemUserContent.define(Map<String, dynamic> json) {
+  factory SystemContent.define(Map<String, dynamic> json) {
     switch (json['type']) {
       case 'text':
         return TextContent.fromJson(json);
@@ -110,16 +109,16 @@ class SystemUserContent {
 
 // the weird shit starts here........
 
-class UnknownContent extends SystemUserContent {
-  UnknownContent({required SystemUserContentType type}) : super(type: type);
+class UnknownContent extends SystemContent {
+  UnknownContent({required SystemContentType type}) : super(type: type);
   UnknownContent.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 }
 
-class TextContent extends SystemUserContent {
+class TextContent extends SystemContent {
   final String content;
 
   TextContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.content,
   }) : super(type: type);
 
@@ -128,12 +127,12 @@ class TextContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class UserAddedContent extends SystemUserContent {
+class UserAddedContent extends SystemContent {
   final Ulid id;
   final Ulid by;
 
   UserAddedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.id,
     required this.by,
   }) : super(type: type);
@@ -144,12 +143,12 @@ class UserAddedContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class UserRemoveContent extends SystemUserContent {
+class UserRemoveContent extends SystemContent {
   final Ulid id;
   final Ulid by;
 
   UserRemoveContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.id,
     required this.by,
   }) : super(type: type);
@@ -160,11 +159,11 @@ class UserRemoveContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class UserJoinedContent extends SystemUserContent {
+class UserJoinedContent extends SystemContent {
   final Ulid id;
 
   UserJoinedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.id,
   }) : super(type: type);
 
@@ -173,11 +172,11 @@ class UserJoinedContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class UserLeftContent extends SystemUserContent {
+class UserLeftContent extends SystemContent {
   final Ulid id;
 
   UserLeftContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.id,
   }) : super(type: type);
 
@@ -186,11 +185,11 @@ class UserLeftContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class UserKickedContent extends SystemUserContent {
+class UserKickedContent extends SystemContent {
   final Ulid id;
 
   UserKickedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.id,
   }) : super(type: type);
 
@@ -199,11 +198,11 @@ class UserKickedContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class UserBannedContent extends SystemUserContent {
+class UserBannedContent extends SystemContent {
   final Ulid id;
 
   UserBannedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.id,
   }) : super(type: type);
 
@@ -212,12 +211,12 @@ class UserBannedContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class ChannelRenamedContent extends SystemUserContent {
+class ChannelRenamedContent extends SystemContent {
   final String name;
   final Ulid by;
 
   ChannelRenamedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.name,
     required this.by,
   }) : super(type: type);
@@ -228,11 +227,11 @@ class ChannelRenamedContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class ChannelDescriptionChangedContent extends SystemUserContent {
+class ChannelDescriptionChangedContent extends SystemContent {
   final Ulid by;
 
   ChannelDescriptionChangedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.by,
   }) : super(type: type);
 
@@ -241,11 +240,11 @@ class ChannelDescriptionChangedContent extends SystemUserContent {
         super.fromJson(json);
 }
 
-class ChannelIconChangedContent extends SystemUserContent {
+class ChannelIconChangedContent extends SystemContent {
   final Ulid by;
 
   ChannelIconChangedContent({
-    required SystemUserContentType type,
+    required SystemContentType type,
     required this.by,
   }) : super(type: type);
 
