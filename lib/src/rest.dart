@@ -120,6 +120,15 @@ class RevoltRest {
     );
   }
 
+  Future<Message> fetchMessage({
+    required Ulid channelId,
+    required Ulid messageId,
+  }) async {
+    return Message.fromJson(
+      await fetchRaw('GET', '/channels/$channelId/messages/$messageId'),
+    );
+  }
+
   // --- Groups ---
 
   // --- Voice ---
