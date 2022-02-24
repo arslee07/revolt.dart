@@ -26,25 +26,24 @@ class RevoltRest {
         host: baseUrl.host,
         port: baseUrl.port,
         path: baseUrl.path + path,
-        queryParameters: query,
+        queryParameters: query.isEmpty ? null : query,
       ),
     );
 
-    req.headers.add('content-type', 'application/json');
+    req.headers.contentType =
+        ContentType('application', 'json', charset: 'utf-8');
 
     if (sessionToken != null) {
-      req.headers.add('x-session-token', sessionToken!);
+      req.headers.set('x-session-token', sessionToken!);
     } else if (botToken != null) {
-      req.headers.add('x-bot-token', botToken!);
+      req.headers.set('x-bot-token', botToken!);
     }
 
-    if (method != 'GET') {
-      req.headers.add('content-length', utf8.encode(jsonEncode(body)).length);
-      req.add(utf8.encode(jsonEncode(body)));
-    }
+    req.headers.contentLength = jsonEncode(body).length;
+    req.write(jsonEncode(body));
 
     final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
+    final data = await utf8.decodeStream(res);
     c.close();
 
     if (!(res.statusCode >= 200 && res.statusCode <= 299)) {
