@@ -100,6 +100,7 @@ class RevoltRest {
 
   // --- Channel Information ---
 
+  /// Retreive a channel.
   Future<T> fetchChannel<T extends Channel>({required Ulid channelId}) async {
     return Channel.define(await fetchRaw('GET', '/channels/$channelId')) as T;
   }
@@ -124,6 +125,7 @@ class RevoltRest {
     );
   }
 
+  /// Retreive a message.
   Future<Message> fetchMessage({
     required Ulid channelId,
     required Ulid messageId,

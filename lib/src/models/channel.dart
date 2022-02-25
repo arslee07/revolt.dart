@@ -15,8 +15,12 @@ class ChannelType extends Enum<String> {
   const ChannelType._create(String value) : super(value);
 }
 
+/// Basic channel
 abstract class Channel {
+  /// Channel ID
   final Ulid id;
+
+  /// Channel type
   final ChannelType type;
 
   Channel({required this.id, required this.type});
@@ -43,10 +47,14 @@ abstract class Channel {
   }
 }
 
+/// Text channel
 abstract class TextChannel implements Channel {}
 
+/// Voice channel
 abstract class VoiceChannel implements Channel {}
 
+/// Unknown channel
+/// If you're getting it, please open an issue, because the actual channel is probably not implemented yet
 class UnknownChannel extends Channel {
   UnknownChannel({
     required Ulid id,
@@ -55,7 +63,9 @@ class UnknownChannel extends Channel {
   UnknownChannel.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 }
 
+/// Saved message channel
 class SavedMessagesChannel extends Channel implements TextChannel {
+  /// User ID
   final Ulid user;
 
   SavedMessagesChannel({
@@ -69,9 +79,15 @@ class SavedMessagesChannel extends Channel implements TextChannel {
         super.fromJson(json);
 }
 
+/// Direct messaging channel
 class DirectMessageChannel extends Channel implements TextChannel {
+  /// Whether this DM is active
   final bool active;
+
+  /// List of user IDs who are participating in this DM
   final List<Ulid> recipients;
+
+  /// ID of the last message in this channel
   final Ulid? lastMessageId;
 
   DirectMessageChannel({
@@ -93,13 +109,28 @@ class DirectMessageChannel extends Channel implements TextChannel {
 
 /// Group channel
 class Group extends Channel implements TextChannel {
+  /// List of user IDs who are participating in this group
   final List<Ulid> recipients;
+
+  /// Group name
   final String name;
+
+  /// Group owner ID
   final Ulid owner;
+
+  /// Group description
   final String? description;
+
+  /// ID of the last message in this channel
   final Ulid? lastMessageId;
+
+  /// Group icon
   final Attachment? icon;
+
+  /// Permissions given to group members
   final ChannelPermissions? permissions;
+
+  /// Whether this channel is marked as not safe for work
   final bool? nsfw;
 
   Group({
@@ -131,12 +162,24 @@ class Group extends Channel implements TextChannel {
         super.fromJson(json);
 }
 
+/// Server channel
 abstract class ServerChannel extends Channel {
+  /// Server ID
   final Ulid server;
+
+  /// Channel name
   final String name;
+
+  /// Channel description
   final String? description;
+
+  /// Permissions given to all users
   final ChannelPermissions? defaultPermissionsOverrides;
+
+  /// Permissions given to roles
   final List<RolePermissionsOverrides>? rolePermissionsOverrides;
+
+  /// Whether this channel is marked as not safe for work
   final bool? nsfw;
 
   ServerChannel({
@@ -167,7 +210,9 @@ abstract class ServerChannel extends Channel {
         super.fromJson(json);
 }
 
+/// Server textr channel
 class ServerTextChannel extends ServerChannel implements TextChannel {
+  /// ID of the last message in this channel
   final Ulid? lastMessageId;
 
   ServerTextChannel({
@@ -198,6 +243,7 @@ class ServerTextChannel extends ServerChannel implements TextChannel {
         super.fromJson(json);
 }
 
+/// Server voice channel
 class ServerVoiceChannel extends ServerChannel implements VoiceChannel {
   ServerVoiceChannel({
     required Ulid id,
