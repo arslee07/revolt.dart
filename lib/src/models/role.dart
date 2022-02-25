@@ -55,3 +55,18 @@ class RolePermissions {
       : server = ServerPermissions.fromRaw(rawServer),
         channel = ChannelPermissions.fromRaw(rawChannel);
 }
+
+/// Role permissions overrides
+class RolePermissionsOverrides {
+  /// Role ID
+  final Ulid role;
+
+  /// Role channel permissions
+  final ChannelPermissions permissions;
+
+  RolePermissionsOverrides({required this.role, required this.permissions});
+
+  RolePermissionsOverrides.fromRaw(String roleId, int rawPermissions)
+      : role = Ulid(roleId),
+        permissions = ChannelPermissions.fromRaw(rawPermissions);
+}
