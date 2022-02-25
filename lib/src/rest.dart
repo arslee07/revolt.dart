@@ -100,6 +100,10 @@ class RevoltRest {
 
   // --- Channel Information ---
 
+  Future<T> fetchChannel<T extends Channel>({required Ulid channelId}) async {
+    return Channel.define(await fetchRaw('GET', '/channels/$channelId')) as T;
+  }
+
   // --- Channel Invites ---
 
   // --- Channel Permissions ---
