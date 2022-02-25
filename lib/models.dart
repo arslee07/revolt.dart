@@ -8,3 +8,4 @@ export 'src/models/message.dart';
 export 'src/models/permissions.dart';
 export 'src/models/role.dart';
 export 'src/models/server.dart';
+export 'src/models/channel.dart';
