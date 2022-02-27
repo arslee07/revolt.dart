@@ -1,5 +1,4 @@
 import 'package:revolt/src/utils/enum.dart';
-import 'package:revolt/src/utils/flags_utils.dart';
 
 /// Attachment information
 class Attachment {

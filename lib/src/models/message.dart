@@ -2,17 +2,40 @@ import 'package:revolt/src/models/attachment.dart';
 import 'package:revolt/src/models/ulid.dart';
 import 'package:revolt/src/utils/enum.dart';
 
+/// Message model
 class Message {
+  /// Message ID
   final Ulid id;
+
+  /// Nonce value used to prevent double requests to create objects
   final String? nonce;
+
+  /// Channel ID
   final Ulid channel;
+
+  /// Author ID
   final Ulid author;
+
+  /// Message content
+  /// Can be a [String] or a subtype of [SystemContent] (if sent by the system user)
   final dynamic content;
+
+  /// Message attachments
   final List<Attachment>? attachments;
+
+  /// Unix timestamp of when message was last edited
   final DateTime? edited;
+
+  /// Message embeds
   final List<Embed>? embeds;
+
+  /// Array of user IDs mentioned in message
   final List<Ulid>? mentions;
+
+  /// Array of message IDs replied to
   final List<String>? replies;
+
+  /// Masquerade displayed for a message, replaces user's name and avatar
   final Masquerade? masquerade;
 
   Message({
@@ -270,14 +293,31 @@ class EmbeddedVideo {
 }
 
 class WebsiteEmbed extends Embed {
+  /// Website URL
   final Uri? url;
+
+  /// A special 3rd party embed
   final WebsiteEmbedSpecial? special;
+
+  /// Embed title
   final String? title;
+
+  /// Embed description
   final String? description;
+
+  /// Embedded image
   final EmbeddedImage? image;
+
+  /// Embedded viedo
   final EmbeddedVideo? video;
+
+  /// Website name
   final String? siteName;
+
+  /// Website icon URL
   final Uri? iconUrl;
+
+  /// Valid HTML colour
   final String? colour;
 
   WebsiteEmbed({
@@ -434,8 +474,6 @@ abstract class SystemContent {
     }
   }
 }
-
-// the weird shit starts here........
 
 class UnknownContent extends SystemContent {
   UnknownContent({required SystemContentType type}) : super(type: type);
