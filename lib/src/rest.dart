@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:revolt/models.dart';
-import 'package:revolt/src/models/account.dart';
 
 class RevoltRest {
   final String? botToken;
