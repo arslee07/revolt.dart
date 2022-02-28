@@ -226,7 +226,7 @@ class SpotifyEmbedSpecial extends WebsiteEmbedSpecial {
   SpotifyEmbedSpecial.fromJson(Map<String, dynamic> json)
       : contentType = json['content_type'],
         id = json['id'],
-        super.fromJson(json['type']);
+        super.fromJson(json);
 }
 
 class SoundcloudEmbedSpecial extends WebsiteEmbedSpecial {
@@ -256,7 +256,7 @@ class BandcampEmbedSpecial extends WebsiteEmbedSpecial {
   BandcampEmbedSpecial.fromJson(Map<String, dynamic> json)
       : contentType = json['content_type'],
         id = json['id'],
-        super.fromJson(json['type']);
+        super.fromJson(json);
 }
 
 class EmbeddedImage {
