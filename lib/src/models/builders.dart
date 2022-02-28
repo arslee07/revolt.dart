@@ -103,3 +103,103 @@ class TextEmbedBuilder extends EmbedBuilder {
     };
   }
 }
+
+class CreateAccountBuilder extends Builder<Map<String, dynamic>> {
+  final String email;
+  final String password;
+  final String? invite;
+  final String? captcha;
+
+  CreateAccountBuilder({
+    required this.email,
+    required this.password,
+    this.invite,
+    this.captcha,
+  });
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'email': email,
+      'password': password,
+      if (invite != null) 'invite': invite!,
+      if (captcha != null) 'captcha': captcha!,
+    };
+  }
+}
+
+class ResendVerificationBuilder extends Builder<Map<String, dynamic>> {
+  final String email;
+  final String? captcha;
+
+  ResendVerificationBuilder({required this.email, this.captcha});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'email': email,
+      if (captcha != null) 'captcha': captcha!,
+    };
+  }
+}
+
+class SendPasswordResetBuilder extends Builder<Map<String, dynamic>> {
+  final String email;
+  final String? captcha;
+
+  SendPasswordResetBuilder({required this.email, this.captcha});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'email': email,
+      if (captcha != null) 'captcha': captcha!,
+    };
+  }
+}
+
+class PasswordResetBuilder extends Builder<Map<String, dynamic>> {
+  final String password;
+  final String token;
+
+  PasswordResetBuilder({required this.password, required this.token});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'password': password,
+      'token': token,
+    };
+  }
+}
+
+class ChangePasswordBuilder extends Builder<Map<String, dynamic>> {
+  final String password;
+  final String currentPassword;
+
+  ChangePasswordBuilder(
+      {required this.password, required this.currentPassword});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'password': password,
+      'current_password': currentPassword,
+    };
+  }
+}
+
+class ChangeEmailBuilder extends Builder<Map<String, dynamic>> {
+  final String currentPassword;
+  final String email;
+
+  ChangeEmailBuilder({required this.currentPassword, required this.email});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'current_password': currentPassword,
+      'email': email,
+    };
+  }
+}
