@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:revolt/models.dart';
+import 'package:revolt/src/models/account.dart';
 
 class RevoltRest {
   final String? botToken;
@@ -81,9 +82,93 @@ class RevoltRest {
     );
   }
 
-  // --- Auth ---
-
   // --- Account ---
+
+  /// Fetch account information.
+  Future<AccountInfo> fetchAccount() async {
+    return AccountInfo.fromJson(
+      await fetchRaw(
+        'GET',
+        '/auth/account',
+      ),
+    );
+  }
+
+  /// Create a new account.
+  Future<void> createAccount({
+    required CreateAccountBuilder builder,
+  }) async {
+    await fetchRaw(
+      'POST',
+      '/auth/account/create',
+      body: builder.build(),
+    );
+  }
+
+  /// Resend account creation verification email.
+  Future<void> resendVerfication({
+    required ResendVerificationBuilder builder,
+  }) async {
+    await fetchRaw(
+      'POST',
+      '/auth/account/reverify',
+      body: builder.build(),
+    );
+  }
+
+  /// Verify email with verification code.
+  Future<void> verifyEmail({
+    required String code,
+  }) async {
+    await fetchRaw(
+      'POST',
+      '/auth/account/verify/$code',
+    );
+  }
+
+  /// Send password reset email.
+  Future<void> sendPasswordReset({
+    required SendPasswordResetBuilder builder,
+  }) async {
+    await fetchRaw(
+      'POST',
+      '/auth/account/reset_password',
+      body: builder.build(),
+    );
+  }
+
+  /// Conirm password reset.
+  Future<void> passwordReset({
+    required PasswordResetBuilder builder,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/auth/account/reset_password',
+      body: builder.build(),
+    );
+  }
+
+  /// Change account password.
+  Future<void> changePassword({
+    required ChangePasswordBuilder builder,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/auth/account/change/password',
+      body: builder.build(),
+    );
+  }
+
+  /// Change account email.
+  Future<void> changeEmail({
+    required ChangeEmailBuilder builder,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/auth/account/change/email',
+      body: builder.build(),
+    );
+  }
 
   // --- Session ---
 
