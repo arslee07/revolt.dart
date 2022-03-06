@@ -177,8 +177,10 @@ class ChangePasswordBuilder extends Builder<Map<String, dynamic>> {
   final String password;
   final String currentPassword;
 
-  ChangePasswordBuilder(
-      {required this.password, required this.currentPassword});
+  ChangePasswordBuilder({
+    required this.password,
+    required this.currentPassword,
+  });
 
   @override
   Map<String, dynamic> build() {
@@ -200,6 +202,73 @@ class ChangeEmailBuilder extends Builder<Map<String, dynamic>> {
     return {
       'current_password': currentPassword,
       'email': email,
+    };
+  }
+}
+
+/// Login data
+class LoginBuilder extends Builder<Map<String, dynamic>> {
+  /// Valid email address
+  final String email;
+
+  /// Password
+  final String? password;
+
+  /// Security key challenge
+  final String? challenge;
+
+  /// Session friendly name
+  final String? friendlyName;
+
+  /// Captch verification code
+  final String? captcha;
+
+  LoginBuilder({
+    required this.email,
+    this.password,
+    this.challenge,
+    this.friendlyName,
+    this.captcha,
+  });
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'email': email,
+      if (password != null) 'password': password,
+      if (challenge != null) 'challenge': challenge,
+      if (friendlyName != null) 'friendly_name': friendlyName,
+      if (captcha != null) 'captcha': captcha,
+    };
+  }
+}
+
+/// Edit data
+class EditSessionBuilder extends Builder<Map<String, dynamic>> {
+  /// Session friendly name
+  final String friendlyName;
+
+  EditSessionBuilder({required this.friendlyName});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'friendly_name': friendlyName,
+    };
+  }
+}
+
+/// Delete all active sessions query
+class DeleteAllSessionsBuilder extends Builder<Map<String, String>> {
+  /// Whether to revoke current session too
+  final bool? revokeSelf;
+
+  DeleteAllSessionsBuilder({this.revokeSelf});
+
+  @override
+  Map<String, String> build() {
+    return {
+      if (revokeSelf != null) 'revoke_self': revokeSelf.toString(),
     };
   }
 }
