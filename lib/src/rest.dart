@@ -171,6 +171,71 @@ class RevoltRest {
 
   // --- Session ---
 
+  /// Login to an account.
+  Future<Session> login({
+    required LoginBuilder builder,
+  }) async {
+    return Session.fromJson(
+      await fetchRaw(
+        'POST',
+        '/auth/session/login',
+        body: builder.build(),
+      ),
+    );
+  }
+
+  /// Close current session.
+  Future<void> logout() async {
+    await fetchRaw(
+      'POST',
+      '/auth/session/logout',
+    );
+  }
+
+  /// Edit session information.
+  Future<void> editSession({
+    required Ulid sessionId,
+    required EditSessionBuilder builder,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/auth/session/$sessionId',
+      body: builder.build(),
+    );
+  }
+
+  /// Delete a specific session.
+  Future<void> deleteSession({
+    required Ulid sessionId,
+  }) async {
+    await fetchRaw(
+      'DELETE',
+      '/auth/session/$sessionId',
+    );
+  }
+
+  /// Fetch all sessions.
+  Future<List<PartialSession>> fetchSessions() async {
+    return [
+      for (final e in await fetchRaw(
+        'GET',
+        '/auth/session/all',
+      ))
+        PartialSession.fromJson(e)
+    ];
+  }
+
+  /// Delete all active sessions.
+  Future<void> deleteAllSessions({
+    required DeleteAllSessionsBuilder builder,
+  }) async {
+    await fetchRaw(
+      'DELETE',
+      '/auth/session/all',
+      query: builder.build(),
+    );
+  }
+
   // --- User Information ---
 
   /// Retrieve your user information.
