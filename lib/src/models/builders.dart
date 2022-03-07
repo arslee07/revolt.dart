@@ -1,23 +1,23 @@
 import 'package:revolt/src/models/ulid.dart';
 import 'package:revolt/src/utils/builder.dart';
 
-class CompleteOnboardingBuilder extends Builder<Map<String, dynamic>> {
+class CompleteOnboardingPayload extends Builder<Map<String, dynamic>> {
   final String username;
 
-  CompleteOnboardingBuilder({required this.username});
+  CompleteOnboardingPayload({required this.username});
 
   @override
   Map<String, dynamic> build() => {'username': username};
 }
 
-class MessageBuilder extends Builder<Map<String, dynamic>> {
+class MessagePayload extends Builder<Map<String, dynamic>> {
   final String? content;
   final List<String>? attachments;
-  final List<MessageReplyBuilder>? replies;
-  final List<EmbedBuilder>? embeds;
-  final MasqueradeBuilder? masquerade;
+  final List<MessageReplyPayload>? replies;
+  final List<EmbedPayload>? embeds;
+  final MasqueradePayload? masquerade;
 
-  MessageBuilder({
+  MessagePayload({
     this.content,
     this.replies,
     this.embeds,
@@ -41,11 +41,11 @@ class MessageBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
+class MessageReplyPayload extends Builder<Map<String, dynamic>> {
   final Ulid messageId;
   final bool mention;
 
-  MessageReplyBuilder(this.messageId, {this.mention = false});
+  MessageReplyPayload(this.messageId, {this.mention = false});
 
   @override
   Map<String, dynamic> build() {
@@ -56,11 +56,11 @@ class MessageReplyBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class MasqueradeBuilder extends Builder<Map<String, dynamic>> {
+class MasqueradePayload extends Builder<Map<String, dynamic>> {
   final String? name;
   final Uri? avatar;
 
-  MasqueradeBuilder({this.name, this.avatar});
+  MasqueradePayload({this.name, this.avatar});
 
   @override
   Map<String, dynamic> build() {
@@ -71,9 +71,9 @@ class MasqueradeBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-abstract class EmbedBuilder extends Builder<Map<String, dynamic>> {}
+abstract class EmbedPayload extends Builder<Map<String, dynamic>> {}
 
-class TextEmbedBuilder extends EmbedBuilder {
+class TextEmbedPayload extends EmbedPayload {
   final Uri? iconUrl;
   final Uri? url;
   final String? title;
@@ -81,7 +81,7 @@ class TextEmbedBuilder extends EmbedBuilder {
   final String? media;
   final String? colour;
 
-  TextEmbedBuilder({
+  TextEmbedPayload({
     this.iconUrl,
     this.url,
     this.title,
@@ -104,13 +104,13 @@ class TextEmbedBuilder extends EmbedBuilder {
   }
 }
 
-class CreateAccountBuilder extends Builder<Map<String, dynamic>> {
+class CreateAccountPayload extends Builder<Map<String, dynamic>> {
   final String email;
   final String password;
   final String? invite;
   final String? captcha;
 
-  CreateAccountBuilder({
+  CreateAccountPayload({
     required this.email,
     required this.password,
     this.invite,
@@ -128,11 +128,11 @@ class CreateAccountBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class ResendVerificationBuilder extends Builder<Map<String, dynamic>> {
+class ResendVerificationPayload extends Builder<Map<String, dynamic>> {
   final String email;
   final String? captcha;
 
-  ResendVerificationBuilder({required this.email, this.captcha});
+  ResendVerificationPayload({required this.email, this.captcha});
 
   @override
   Map<String, dynamic> build() {
@@ -143,11 +143,11 @@ class ResendVerificationBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class SendPasswordResetBuilder extends Builder<Map<String, dynamic>> {
+class SendPasswordResetPayload extends Builder<Map<String, dynamic>> {
   final String email;
   final String? captcha;
 
-  SendPasswordResetBuilder({required this.email, this.captcha});
+  SendPasswordResetPayload({required this.email, this.captcha});
 
   @override
   Map<String, dynamic> build() {
@@ -158,11 +158,11 @@ class SendPasswordResetBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class PasswordResetBuilder extends Builder<Map<String, dynamic>> {
+class PasswordResetPayload extends Builder<Map<String, dynamic>> {
   final String password;
   final String token;
 
-  PasswordResetBuilder({required this.password, required this.token});
+  PasswordResetPayload({required this.password, required this.token});
 
   @override
   Map<String, dynamic> build() {
@@ -173,11 +173,11 @@ class PasswordResetBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class ChangePasswordBuilder extends Builder<Map<String, dynamic>> {
+class ChangePasswordPayload extends Builder<Map<String, dynamic>> {
   final String password;
   final String currentPassword;
 
-  ChangePasswordBuilder({
+  ChangePasswordPayload({
     required this.password,
     required this.currentPassword,
   });
@@ -191,11 +191,11 @@ class ChangePasswordBuilder extends Builder<Map<String, dynamic>> {
   }
 }
 
-class ChangeEmailBuilder extends Builder<Map<String, dynamic>> {
+class ChangeEmailPayload extends Builder<Map<String, dynamic>> {
   final String currentPassword;
   final String email;
 
-  ChangeEmailBuilder({required this.currentPassword, required this.email});
+  ChangeEmailPayload({required this.currentPassword, required this.email});
 
   @override
   Map<String, dynamic> build() {
@@ -207,7 +207,7 @@ class ChangeEmailBuilder extends Builder<Map<String, dynamic>> {
 }
 
 /// Login data
-class LoginBuilder extends Builder<Map<String, dynamic>> {
+class LoginPayload extends Builder<Map<String, dynamic>> {
   /// Valid email address
   final String email;
 
@@ -223,7 +223,7 @@ class LoginBuilder extends Builder<Map<String, dynamic>> {
   /// Captch verification code
   final String? captcha;
 
-  LoginBuilder({
+  LoginPayload({
     required this.email,
     this.password,
     this.challenge,
@@ -244,11 +244,11 @@ class LoginBuilder extends Builder<Map<String, dynamic>> {
 }
 
 /// Edit data
-class EditSessionBuilder extends Builder<Map<String, dynamic>> {
+class EditSessionPayload extends Builder<Map<String, dynamic>> {
   /// Session friendly name
   final String friendlyName;
 
-  EditSessionBuilder({required this.friendlyName});
+  EditSessionPayload({required this.friendlyName});
 
   @override
   Map<String, dynamic> build() {
@@ -259,11 +259,11 @@ class EditSessionBuilder extends Builder<Map<String, dynamic>> {
 }
 
 /// Delete all active sessions query
-class DeleteAllSessionsBuilder extends Builder<Map<String, String>> {
+class DeleteAllSessionsPayload extends Builder<Map<String, String>> {
   /// Whether to revoke current session too
   final bool? revokeSelf;
 
-  DeleteAllSessionsBuilder({this.revokeSelf});
+  DeleteAllSessionsPayload({this.revokeSelf});
 
   @override
   Map<String, String> build() {

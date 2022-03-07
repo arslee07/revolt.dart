@@ -72,7 +72,7 @@ class RevoltRest {
 
   /// Set a new username, complete onboarding and allow a user to start using Revolt.
   Future<void> completeOnboarding(
-    CompleteOnboardingBuilder completeOnboardingBuilder,
+    CompleteOnboardingPayload completeOnboardingBuilder,
   ) async {
     await fetchRaw(
       'POST',
@@ -95,23 +95,23 @@ class RevoltRest {
 
   /// Create a new account.
   Future<void> createAccount({
-    required CreateAccountBuilder builder,
+    required CreateAccountPayload payload,
   }) async {
     await fetchRaw(
       'POST',
       '/auth/account/create',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
   /// Resend account creation verification email.
   Future<void> resendVerfication({
-    required ResendVerificationBuilder builder,
+    required ResendVerificationPayload payload,
   }) async {
     await fetchRaw(
       'POST',
       '/auth/account/reverify',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
@@ -127,45 +127,45 @@ class RevoltRest {
 
   /// Send password reset email.
   Future<void> sendPasswordReset({
-    required SendPasswordResetBuilder builder,
+    required SendPasswordResetPayload payload,
   }) async {
     await fetchRaw(
       'POST',
       '/auth/account/reset_password',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
   /// Conirm password reset.
   Future<void> passwordReset({
-    required PasswordResetBuilder builder,
+    required PasswordResetPayload payload,
   }) async {
     await fetchRaw(
       'PATCH',
       '/auth/account/reset_password',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
   /// Change account password.
   Future<void> changePassword({
-    required ChangePasswordBuilder builder,
+    required ChangePasswordPayload payload,
   }) async {
     await fetchRaw(
       'PATCH',
       '/auth/account/change/password',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
   /// Change account email.
   Future<void> changeEmail({
-    required ChangeEmailBuilder builder,
+    required ChangeEmailPayload payload,
   }) async {
     await fetchRaw(
       'PATCH',
       '/auth/account/change/email',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
@@ -173,13 +173,13 @@ class RevoltRest {
 
   /// Login to an account.
   Future<Session> login({
-    required LoginBuilder builder,
+    required LoginPayload payload,
   }) async {
     return Session.fromJson(
       await fetchRaw(
         'POST',
         '/auth/session/login',
-        body: builder.build(),
+        body: payload.build(),
       ),
     );
   }
@@ -195,12 +195,12 @@ class RevoltRest {
   /// Edit session information.
   Future<void> editSession({
     required Ulid sessionId,
-    required EditSessionBuilder builder,
+    required EditSessionPayload payload,
   }) async {
     await fetchRaw(
       'PATCH',
       '/auth/session/$sessionId',
-      body: builder.build(),
+      body: payload.build(),
     );
   }
 
@@ -227,12 +227,12 @@ class RevoltRest {
 
   /// Delete all active sessions.
   Future<void> deleteAllSessions({
-    required DeleteAllSessionsBuilder builder,
+    required DeleteAllSessionsPayload payload,
   }) async {
     await fetchRaw(
       'DELETE',
       '/auth/session/all',
-      query: builder.build(),
+      query: payload.build(),
     );
   }
 
@@ -250,8 +250,15 @@ class RevoltRest {
   // --- Channel Information ---
 
   /// Retreive a channel.
-  Future<T> fetchChannel<T extends Channel>({required Ulid channelId}) async {
-    return Channel.define(await fetchRaw('GET', '/channels/$channelId')) as T;
+  Future<T> fetchChannel<T extends Channel>({
+    required Ulid channelId,
+  }) async {
+    return Channel.define(
+      await fetchRaw(
+        'GET',
+        '/channels/$channelId',
+      ),
+    ) as T;
   }
 
   // --- Channel Invites ---
@@ -263,13 +270,13 @@ class RevoltRest {
   /// Send message to specified channel.
   Future<Message> sendMessage({
     required Ulid channelId,
-    required MessageBuilder message,
+    required MessagePayload payload,
   }) async {
     return Message.fromJson(
       await fetchRaw(
         'POST',
         '/channels/$channelId/messages',
-        body: message.build(),
+        body: payload.build(),
       ),
     );
   }
@@ -280,7 +287,10 @@ class RevoltRest {
     required Ulid messageId,
   }) async {
     return Message.fromJson(
-      await fetchRaw('GET', '/channels/$channelId/messages/$messageId'),
+      await fetchRaw(
+        'GET',
+        '/channels/$channelId/messages/$messageId',
+      ),
     );
   }
 
@@ -291,8 +301,15 @@ class RevoltRest {
   // --- Server Information ---
 
   /// Retrieve a server.
-  Future<Server> fetchServer({required Ulid serverId}) async {
-    return Server.fromJson(await fetchRaw('GET', '/servers/$serverId'));
+  Future<Server> fetchServer({
+    required Ulid serverId,
+  }) async {
+    return Server.fromJson(
+      await fetchRaw(
+        'GET',
+        '/servers/$serverId',
+      ),
+    );
   }
 
   // --- Server Members ---
