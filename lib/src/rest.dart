@@ -238,9 +238,82 @@ class RevoltRest {
 
   // --- User Information ---
 
+  /// Retreive a user's information.
+  Future<User> fetchUser({
+    required Ulid userId,
+  }) async {
+    return User.fromJson(
+      await fetchRaw(
+        'GET',
+        '/users/$userId',
+      ),
+    );
+  }
+
+  /// Edit your user object.
+  Future<void> editUser({
+    required EditUserPayload payload,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/users/@me',
+      body: payload.build(),
+    );
+  }
+
   /// Retrieve your user information.
   Future<User> fetchSelf() async {
-    return User.fromJson(await fetchRaw('GET', '/users/@me'));
+    return User.fromJson(
+      await fetchRaw(
+        'GET',
+        '/users/@me',
+      ),
+    );
+  }
+
+  /// Change your username.
+  Future<void> changeUsername({
+    required ChangeUsernamePayload payload,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/users/@me/username',
+      body: payload.build(),
+    );
+  }
+
+  /// Retreive a user's profile data.
+  Future<UserProfile> fetchUserProfile({
+    required Ulid userId,
+  }) async {
+    return UserProfile.fromJson(
+      await fetchRaw(
+        'GET',
+        '/users/$userId/profile',
+      ),
+    );
+  }
+
+  /// This returns a default avatar based on the given id.
+  // FIXME
+  // Future<String> fetchDefaultAvatar({
+  //   required Ulid userId,
+  // }) async {
+  //   return await fetchRaw(
+  //     'GET',
+  //     '/users/$userId/default_avatar',
+  //   ) as String;
+  // }
+
+  Future<MutualFriendsAndServers> fetchMutualFriendsAndServers({
+    required Ulid userId,
+  }) async {
+    return MutualFriendsAndServers.fromJson(
+      await fetchRaw(
+        'GET',
+        '/users/$userId/mutual',
+      ),
+    );
   }
 
   // --- Direct Messaging ---
