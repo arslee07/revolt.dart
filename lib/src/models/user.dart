@@ -240,3 +240,21 @@ class BotInformation {
   BotInformation.fromJson(Map<String, dynamic> json)
       : owner = Ulid(json['owner']);
 }
+
+/// Mutual friends and servers
+class MutualFriendsAndServers {
+  /// Mutual users
+  final List<Ulid> users;
+
+  /// Mutual servers
+  final List<Ulid> servers;
+
+  MutualFriendsAndServers({
+    required this.users,
+    required this.servers,
+  });
+
+  MutualFriendsAndServers.fromJson(Map<String, dynamic> json)
+      : users = [for (final e in json['users']) Ulid(e)],
+        servers = [for (final e in json['servers']) Ulid(e)];
+}
