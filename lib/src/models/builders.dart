@@ -1,5 +1,7 @@
 import 'package:revolt/src/models/ulid.dart';
+import 'package:revolt/src/models/user.dart';
 import 'package:revolt/src/utils/builder.dart';
+import 'package:revolt/src/utils/enum.dart';
 
 class CompleteOnboardingPayload extends Builder<Map<String, dynamic>> {
   final String username;
@@ -269,6 +271,101 @@ class DeleteAllSessionsPayload extends Builder<Map<String, String>> {
   Map<String, String> build() {
     return {
       if (revokeSelf != null) 'revoke_self': revokeSelf.toString(),
+    };
+  }
+}
+
+/// Requested changes to user object
+class EditUserPayload extends Builder<Map<String, dynamic>> {
+  /// User status
+  final UserStatusPayload? status;
+
+  /// User profile data
+  final UserProfileDataPayload? profile;
+
+  /// Autumn file ID
+  final String? avatar;
+
+  /// Field to remove from user object
+  final RemoveField? remove;
+
+  EditUserPayload({this.status, this.profile, this.avatar, this.remove});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      if (status != null) 'status': status!.build(),
+      if (profile != null) 'profile': profile!.build(),
+      if (avatar != null) 'avatar': avatar,
+      if (remove != null) 'remove': remove!.value,
+    };
+  }
+}
+
+/// User status payload builder
+class UserStatusPayload extends Builder<Map<String, dynamic>> {
+  /// Custom status text
+  final String? text;
+
+  /// User presence
+  final Presence? presence;
+
+  UserStatusPayload({this.text, this.presence});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      if (text != null) 'text': text,
+      if (presence != null) 'presence': presence!.value,
+    };
+  }
+}
+
+/// Field to remove from user object
+class RemoveField extends Enum<String> {
+  static const avatar = RemoveField._create('Avatar');
+  static const profileBackground = RemoveField._create('ProfileBackground');
+  static const profileContent = RemoveField._create('ProfileContent');
+  static const statusText = RemoveField._create('StatusText');
+
+  RemoveField.from(String value) : super(value);
+  const RemoveField._create(String value) : super(value);
+}
+
+/// User profile data payload builder
+class UserProfileDataPayload extends Builder<Map<String, dynamic>> {
+  /// Text to set as user profile description
+  final String? content;
+
+  /// Autumn background file ID
+  final String? background;
+
+  UserProfileDataPayload({this.content, this.background});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      if (content != null) 'content': content,
+      if (background != null) 'background': background,
+    };
+  }
+}
+
+/// Requested change to username
+class ChangeUsernamePayload extends Builder<Map<String, dynamic>> {
+  /// New username
+  final String username;
+
+  /// Current account password
+  final String password;
+
+  ChangeUsernamePayload({required this.username, required this.password});
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'username': username,
+      'password': password,
     };
   }
 }
