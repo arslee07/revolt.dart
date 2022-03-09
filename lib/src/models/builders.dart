@@ -287,7 +287,7 @@ class EditUserPayload extends Builder<Map<String, dynamic>> {
   final String? avatar;
 
   /// Field to remove from user object
-  final RemoveField? remove;
+  final UserRemoveField? remove;
 
   EditUserPayload({this.status, this.profile, this.avatar, this.remove});
 
@@ -322,14 +322,14 @@ class UserStatusPayload extends Builder<Map<String, dynamic>> {
 }
 
 /// Field to remove from user object
-class RemoveField extends Enum<String> {
-  static const avatar = RemoveField._create('Avatar');
-  static const profileBackground = RemoveField._create('ProfileBackground');
-  static const profileContent = RemoveField._create('ProfileContent');
-  static const statusText = RemoveField._create('StatusText');
+class UserRemoveField extends Enum<String> {
+  static const avatar = UserRemoveField._create('Avatar');
+  static const profileBackground = UserRemoveField._create('ProfileBackground');
+  static const profileContent = UserRemoveField._create('ProfileContent');
+  static const statusText = UserRemoveField._create('StatusText');
 
-  RemoveField.from(String value) : super(value);
-  const RemoveField._create(String value) : super(value);
+  UserRemoveField.from(String value) : super(value);
+  const UserRemoveField._create(String value) : super(value);
 }
 
 /// User profile data payload builder
@@ -366,6 +366,52 @@ class ChangeUsernamePayload extends Builder<Map<String, dynamic>> {
     return {
       'username': username,
       'password': password,
+    };
+  }
+}
+
+/// Field to remove from channel object
+class ChannelRemoveField extends Enum<String> {
+  static const description = ChannelRemoveField._create('Description');
+  static const icon = ChannelRemoveField._create('Icon');
+
+  ChannelRemoveField.from(String value) : super(value);
+  const ChannelRemoveField._create(String value) : super(value);
+}
+
+/// Requested changes to channel object
+class EditChannelPayload extends Builder<Map<String, dynamic>> {
+  /// Channel name
+  final String? name;
+
+  /// Channel description
+  final String? description;
+
+  /// Channel icon
+  final String? icon;
+
+  /// Whether this channel is not safe for work
+  final bool? nsfw;
+
+  /// Field to remove from channel object
+  final ChannelRemoveField? remove;
+
+  EditChannelPayload({
+    this.name,
+    this.description,
+    this.icon,
+    this.nsfw,
+    this.remove,
+  });
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (icon != null) 'icon': icon,
+      if (nsfw != null) 'nsfw': nsfw,
+      if (remove != null) 'remove': remove!.value,
     };
   }
 }
