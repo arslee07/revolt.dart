@@ -439,7 +439,7 @@ class RevoltRest {
       body: payload.build(),
     );
   }
-  
+
   /// Deletes a server channel, leaves a group or closes a DM.
   Future<void> closeChannel({
     required Ulid channelId,
@@ -486,6 +486,15 @@ class RevoltRest {
   // --- Groups ---
 
   // --- Voice ---
+
+  Future<VoiceJoinData> joinCall({required Ulid channelId}) async {
+    return VoiceJoinData.fromJson(
+      await fetchRaw(
+        'POST',
+        '/channels/$channelId/join_call',
+      ),
+    );
+  }
 
   // --- Server Information ---
 
