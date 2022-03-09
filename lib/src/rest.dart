@@ -428,6 +428,28 @@ class RevoltRest {
     ) as T;
   }
 
+  /// Edit a channel object.
+  Future<void> editChannel({
+    required Ulid channelId,
+    required EditChannelPayload payload,
+  }) async {
+    await fetchRaw(
+      'PATCH',
+      '/channels/$channelId',
+      body: payload.build(),
+    );
+  }
+  
+  /// Deletes a server channel, leaves a group or closes a DM.
+  Future<void> closeChannel({
+    required Ulid channelId,
+  }) async {
+    await fetchRaw(
+      'DELETE',
+      '/channels/$channelId',
+    );
+  }
+
   // --- Channel Invites ---
 
   // --- Channel Permissions ---
