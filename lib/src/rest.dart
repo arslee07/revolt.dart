@@ -328,7 +328,7 @@ class RevoltRest {
         Channel.define(e),
     ];
   }
-  
+
   /// Open a DM with another user.
   Future<DirectMessageChannel> openDiectMessage({
     required Ulid userId,
@@ -342,6 +342,77 @@ class RevoltRest {
   }
 
   // --- Relationships ---
+
+  /// Fetch all relationships with other users.
+  Future<List<Relationship>> fetchRelationships() async {
+    return [
+      for (final e in await fetchRaw(
+        'GET',
+        '/users/relationships',
+      ))
+        Relationship.fromJson(e),
+    ];
+  }
+
+  /// Fetch relationship with another other user.
+  Future<RelationshipStatus> fetchRelationship({
+    required Ulid userId,
+  }) async {
+    return RelationshipStatus.from(
+      await fetchRaw(
+        'GET',
+        '/users/$userId/relationship',
+      ),
+    );
+  }
+
+  /// Send a friend request to another user or accept another user's friend request.
+  Future<RelationshipStatus> sendFriendRequest({
+    required Ulid userId,
+  }) async {
+    return RelationshipStatus.from(
+      await fetchRaw(
+        'PUT',
+        '/users/$userId/friend',
+      ),
+    );
+  }
+
+  /// Deny another user's friend request or remove an existing friend.
+  Future<RelationshipStatus> removeFriendRequest({
+    required Ulid userId,
+  }) async {
+    return RelationshipStatus.from(
+      await fetchRaw(
+        'DELETE',
+        '/users/$userId/friend',
+      ),
+    );
+  }
+
+  /// Block another user.
+  Future<RelationshipStatus> blockUser({
+    required Ulid userId,
+  }) async {
+    return RelationshipStatus.from(
+      await fetchRaw(
+        'PUT',
+        '/users/$userId/block',
+      ),
+    );
+  }
+
+  /// Unblock another user.
+  Future<RelationshipStatus> unblockUser({
+    required Ulid userId,
+  }) async {
+    return RelationshipStatus.from(
+      await fetchRaw(
+        'DELETE',
+        '/users/$userId/block',
+      ),
+    );
+  }
 
   // --- Channel Information ---
 
