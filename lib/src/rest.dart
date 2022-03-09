@@ -318,6 +318,29 @@ class RevoltRest {
 
   // --- Direct Messaging ---
 
+  /// Fetch direct messages, including any DM and group DM conversations.
+  Future<List<Channel>> fetchDirectMessageChannels() async {
+    return [
+      for (final e in await fetchRaw(
+        'GET',
+        '/users/dms',
+      ))
+        Channel.define(e),
+    ];
+  }
+  
+  /// Open a DM with another user.
+  Future<DirectMessageChannel> openDiectMessage({
+    required Ulid userId,
+  }) async {
+    return DirectMessageChannel.fromJson(
+      await fetchRaw(
+        'GET',
+        '/users/$userId/dm',
+      ),
+    );
+  }
+
   // --- Relationships ---
 
   // --- Channel Information ---
