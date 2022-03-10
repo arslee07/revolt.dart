@@ -452,6 +452,19 @@ class RevoltRest {
 
   // --- Channel Invites ---
 
+  /// Creates an invite to this channel
+  /// Channel must be a [TextChannel]
+  Future<ChannelInvite> createInvite({
+    required Ulid channelId,
+  }) async {
+    return ChannelInvite.fromJson(
+      await fetchRaw(
+        'POST',
+        '/channels/$channelId/invites',
+      ),
+    );
+  }
+
   // --- Channel Permissions ---
 
   // --- Messaging ---
