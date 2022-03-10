@@ -415,3 +415,36 @@ class EditChannelPayload extends Builder<Map<String, dynamic>> {
     };
   }
 }
+
+/// Group create data
+class CreateGroupPayload extends Builder<Map<String, dynamic>> {
+  /// Group name
+  final String name;
+
+  /// Group description
+  final String? description;
+
+  /// Array of user IDs to add to the group
+  /// Note that you must be friends with them
+  final List<Ulid>? users;
+
+  /// Whether this group is not safe for work
+  final bool? nsfw;
+
+  CreateGroupPayload({
+    required this.name,
+    this.description,
+    this.users,
+    this.nsfw,
+  });
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      'name': name,
+      if (description != null) 'decription': description,
+      if (users != null) 'users': users!.map((e) => e.toString()).toList(),
+      if (nsfw != null) 'nsfw': nsfw,
+    };
+  }
+}
