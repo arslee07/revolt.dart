@@ -485,9 +485,59 @@ class RevoltRest {
 
   // --- Groups ---
 
+  /// Create a new group with friends.
+  Future<Group> createGroup({
+    required CreateGroupPayload payload,
+  }) async {
+    return Group.fromJson(
+      await fetchRaw(
+        'POST',
+        '/channels/create',
+        body: payload.build(),
+      ),
+    );
+  }
+
+  /// Retrieve users who are part of this group.
+  Future<List<User>> fetchGroupMembers({
+    required Ulid groupId,
+  }) async {
+    return [
+      for (final e in await fetchRaw(
+        'GET',
+        '/channels/$groupId/members',
+      ))
+        User.fromJson(e)
+    ];
+  }
+
+  /// Add another user to the group.
+  Future<void> addGroupMember({
+    required Ulid groupId,
+    required Ulid userId,
+  }) async {
+    await fetchRaw(
+      'PUT',
+      '/channels/$groupId/recipients/$userId',
+    );
+  }
+
+  /// Remove a user from the group.
+  Future<void> removeGroupMember({
+    required Ulid groupId,
+    required Ulid userId,
+  }) async {
+    await fetchRaw(
+      'DELETE',
+      '/channels/$groupId/recipients/$userId',
+    );
+  }
+
   // --- Voice ---
 
-  Future<VoiceJoinData> joinCall({required Ulid channelId}) async {
+  Future<VoiceJoinData> joinCall({
+    required Ulid channelId,
+  }) async {
     return VoiceJoinData.fromJson(
       await fetchRaw(
         'POST',
