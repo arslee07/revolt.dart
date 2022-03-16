@@ -581,6 +581,40 @@ class RevoltRest {
 
   // --- Invites ---
 
+  /// Fetch an invite by its code.
+  Future<T> fetchInvite<T extends Invite>({
+    required String inviteCode,
+  }) async {
+    return Invite.define(
+      await fetchRaw(
+        'GET',
+        '/invites/$inviteCode',
+      ),
+    ) as T;
+  }
+
+  /// Join an invite by its code.
+  Future<T> joinInvite<T extends JoinedInvite>({
+    required String inviteCode,
+  }) async {
+    return JoinedInvite.define(
+      await fetchRaw(
+        'POST',
+        '/invites/$inviteCode',
+      ),
+    ) as T;
+  }
+
+  /// Delete an invite by its code.
+  Future<void> deleteInvite({
+    required String inviteCode,
+  }) async {
+    await fetchRaw(
+      'DELETE',
+      '/invites/$inviteCode',
+    );
+  }
+
   // --- Sync ---
 
   // --- Web Push ---
