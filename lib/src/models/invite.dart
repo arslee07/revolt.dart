@@ -127,6 +127,23 @@ abstract class JoinedInvite {
 
   JoinedInvite.fromJson(Map<String, dynamic> json)
       : type = JoinedInviteType.from('type');
+
+  factory JoinedInvite.define(Map<String, dynamic> json) {
+    switch (json['type']) {
+      case 'Server':
+        return ServerJoinedInvite.fromJson(json);
+      default:
+        return UnknownJoinedInvite.fromJson(json);
+    }
+  }
+}
+
+/// An unknown stub joined invite type
+/// If you got this type, please open an issue
+class UnknownJoinedInvite extends JoinedInvite {
+  UnknownJoinedInvite({required JoinedInviteType type}) : super(type: type);
+  UnknownJoinedInvite.fromJson(Map<String, dynamic> json)
+      : super.fromJson(json);
 }
 
 /// Server joined invite
