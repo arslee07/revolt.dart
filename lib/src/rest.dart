@@ -466,6 +466,32 @@ class RevoltRest {
   }
 
   // --- Channel Permissions ---
+  /// Sets permissions for the specified role in this channel
+  /// Channel must be a [TextChannel] or [VoiceChannel]
+  Future<void> setRolePermissions({
+    required Ulid channelId,
+    required Ulid roleId,
+    required ChannelPermissionsPayload payload,
+  }) async {
+    await fetchRaw(
+      'PUT',
+      '/channels/$channelId/permissions/$roleId',
+      body: payload.build(),
+    );
+  }
+
+  /// Sets permissions for the default role in this channel
+  /// Channel must be a [Group], [TextChannel] or [VoiceChannel]
+  Future<void> setDefaultPermissions({
+    required Ulid channelId,
+    required ChannelPermissionsPayload payload,
+  }) async {
+    await fetchRaw(
+      'PUT',
+      '/channels/$channelId/permissions/default',
+      body: payload.build(),
+    );
+  }
 
   // --- Messaging ---
 
