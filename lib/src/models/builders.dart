@@ -2,6 +2,7 @@ import 'package:revolt/src/models/ulid.dart';
 import 'package:revolt/src/models/user.dart';
 import 'package:revolt/src/utils/builder.dart';
 import 'package:revolt/src/utils/enum.dart';
+import 'package:revolt/src/utils/flags_utils.dart';
 
 class CompleteOnboardingPayload extends Builder<Map<String, dynamic>> {
   final String username;
@@ -446,5 +447,52 @@ class CreateGroupPayload extends Builder<Map<String, dynamic>> {
       if (users != null) 'users': users!.map((e) => e.toString()).toList(),
       if (nsfw != null) 'nsfw': nsfw,
     };
+  }
+}
+
+class ChannelPermissionsBuilder extends Builder<int> {
+  int _raw = 0;
+
+  bool? viewChannel;
+  bool? sendMessages;
+  bool? manageMessages;
+  bool? manageChannel;
+  bool? voiceCall;
+  bool? inviteOthers;
+  bool? embedLinks;
+  bool? uploadFiles;
+  bool? masquerade;
+
+  ChannelPermissionsBuilder();
+
+  void _apply(bool? applies, int shift) =>
+      _raw = FlagsUtils.apply(_raw, applies, shift);
+
+  @override
+  int build() {
+    _raw = 0;
+
+    _apply(viewChannel, 1 << 0);
+    _apply(sendMessages, 1 << 1);
+    _apply(manageMessages, 1 << 2);
+    _apply(manageChannel, 1 << 3);
+    _apply(voiceCall, 1 << 4);
+    _apply(inviteOthers, 1 << 5);
+    _apply(embedLinks, 1 << 6);
+    _apply(uploadFiles, 1 << 7);
+    _apply(masquerade, 1 << 8);
+
+    return _raw;
+  }
+}
+
+class ChannelPermissionsPayload extends Builder<Map<String, dynamic>> {
+  ChannelPermissionsBuilder permissions;
+
+  ChannelPermissionsPayload({required this.permissions});
+
+  @override
+  Map<String, dynamic> build() {
+    return {'permissions': permissions.build()};
   }
 }
