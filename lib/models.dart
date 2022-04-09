@@ -13,3 +13,4 @@ export 'src/models/account.dart';
 export 'src/models/session.dart';
 export 'src/models/voice.dart';
 export 'src/models/invite.dart';
+export 'src/models/member.dart';
