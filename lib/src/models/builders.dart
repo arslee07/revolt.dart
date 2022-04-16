@@ -496,3 +496,57 @@ class ChannelPermissionsPayload extends Builder<Map<String, dynamic>> {
     return {'permissions': permissions.build()};
   }
 }
+
+/// Message sort direction
+class MessageSortDirection extends Enum<String> {
+  static const latest = MessageSortDirection._create('Latest');
+  static const oldest = MessageSortDirection._create('Oldest');
+
+  MessageSortDirection.from(String value) : super(value);
+  const MessageSortDirection._create(String value) : super(value);
+}
+
+/// Messages fetch options
+class FetchMessagesPayload extends Builder<Map<String, dynamic>> {
+  /// Maximum number of messages to fetch. [1..100]
+  /// For fetching nearby messages, this is (limit + 1)
+  final int? limit;
+
+  /// Message ID before which messages should be fetched
+  final Ulid? before;
+
+  /// Message ID after which messages should be fetched
+  final Ulid? after;
+
+  /// Message sort direction
+  final MessageSortDirection direction;
+
+  /// Message id to fetch around, this will ignore [before], [after] and [sort] options.
+  /// Limits in each direction will be half of the specified limit.
+  /// It also fetches the specified message ID.
+  final Ulid? nearby;
+
+  /// Whether to include user (and member, if server channel) objects.
+  final bool? includeUsers;
+
+  FetchMessagesPayload({
+    this.limit,
+    this.before,
+    this.after,
+    required this.direction,
+    this.nearby,
+    this.includeUsers,
+  });
+
+  @override
+  Map<String, dynamic> build() {
+    return {
+      if (limit != null) 'limit': limit,
+      if (before != null) 'before': before.toString(),
+      if (after != null) 'after': after.toString(),
+      'direction': direction.value,
+      if (nearby != null) 'nearby': nearby.toString(),
+      if (includeUsers != null) 'include_users': includeUsers,
+    };
+  }
+}
